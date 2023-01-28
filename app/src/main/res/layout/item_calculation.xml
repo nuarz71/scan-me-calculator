@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="8dp"
+    >
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_item_label_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_input"
+        android:textColor="@color/dark_gray"
+        android:textSize="12sp"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_item_value_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:text="@string/label_input"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_item_label_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/label_result"
+        android:textColor="@color/dark_gray"
+        android:textSize="12sp"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_item_value_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?colorPrimaryVariant"
+        android:textSize="16sp"
+        tools:text="@string/label_result"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/gray"
+        />
+</androidx.appcompat.widget.LinearLayoutCompat>

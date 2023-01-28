@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ScanCalculator" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryVariant">@color/color_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="colorSecondaryVariant">@color/color_secondary_dark</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:forceDarkAllowed" tools:ignore="NewApi">false</item>
+    </style>
+
+    <style name="ShapeAppearanceTopRounded12dp" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">12dp</item>
+        <item name="cornerSizeTopRight">12dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+</resources>

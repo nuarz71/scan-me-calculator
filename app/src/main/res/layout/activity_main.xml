@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.ScanCalculator"
+    tools:context=".presentation.MainActivity"
+    >
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_title_recent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:padding="16dp"
+        android:text="@string/label_title_recent_calculation"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toBottomOf="@id/tv_title_recent"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingVertical="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/card_storage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_recent"
+        tools:listitem="@layout/item_calculation"
+        />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/button_input_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/label_btn_input_open_image"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_add_image"
+        app:iconPadding="8dp"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/tv_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_img_preview"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="6dp"
+        android:background="@color/light_gray"
+        android:elevation="2dp"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        android:padding="1dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/gray"
+        app:layout_constraintBottom_toTopOf="@id/button_input_image"
+        app:layout_constraintEnd_toEndOf="@id/button_input_image"
+        app:layout_constraintStart_toStartOf="@id/button_input_image"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+        tools:visibility="visible"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/label_progressing_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/card_storage"
+        />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:constraint_referenced_ids="tv_progress,progress_horizontal"
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_storage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/light_gray"
+        app:cardElevation="4dp"
+        app:contentPaddingLeft="16dp"
+        app:contentPaddingRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearance="@style/ShapeAppearanceTopRounded12dp"
+        >
+
+        <RadioGroup
+            android:id="@+id/radio_group_storage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_file"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/label_storage_file"
+                />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_db"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/label_storage_database"
+                />
+        </RadioGroup>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

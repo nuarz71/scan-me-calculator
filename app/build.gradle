@@ -1,0 +1,152 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+}
+
+android {
+    namespace 'com.nuarz.scancalc'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.nuarz.scancalc"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        sourceSets {
+            main {
+                res.srcDirs = [
+                        'src/main/res'
+                ]
+            }
+            green {
+                res.srcDirs = [
+                        'src/green/res'
+                ]
+            }
+            red {
+                res.srcDirs = [
+                        'src/red/res'
+                ]
+            }
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    signingConfigs {
+        signing {
+            def keystoreFile = "$rootDir/app/signing.jks"
+            def pass = "nz71qwerty"
+            keyAlias "nuarz"
+            keyPassword pass
+            storeFile file(keystoreFile)
+            storePassword pass
+        }
+    }
+
+    flavorDimensions "API", "THEME"
+    productFlavors {
+        green {
+            dimension "THEME"
+            applicationIdSuffix ".green"
+            matchingFallbacks = ['green']
+        }
+        red {
+            dimension "THEME"
+            applicationIdSuffix ".red"
+            matchingFallbacks = ['red']
+        }
+        pick {
+            dimension "API"
+            matchingFallbacks = ['pick']
+        }
+        capture {
+            dimension "API"
+            matchingFallbacks = ['capture']
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.signing
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.signing
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def flavor_name
+            switch (variant.flavorName) {
+                case "captureGreen":
+                    flavor_name = "green-built-in-camera"
+                    break;
+                case "pickRed":
+                    flavor_name = "red-filesystem"
+                    break;
+                case "captureRed":
+                    flavor_name = "red-built-in-camera"
+                    break;
+                default:
+                    flavor_name = "green-filesystem"
+            }
+            outputFileName = "app-${flavor_name}-${variant.buildType.name}-${variant.versionName}.apk"
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "androidx.activity:activity-ktx:1.6.1"
+
+    def lifecycle_version = '2.5.1'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    def room_version = '2.5.0'
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    def hilt_version = '2.44.2'
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
