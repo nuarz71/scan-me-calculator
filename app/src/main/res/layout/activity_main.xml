@@ -10,25 +10,148 @@
     >
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_current_calculation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:padding="24dp"
+        android:textColor="@color/dark_gray"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_title_recent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed-medium"
         android:padding="16dp"
-        android:text="@string/label_title_recent_calculation"
+        android:text="@string/label_title_history_calculation"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_current_calculation"
         />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:background="@color/light_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_title_recent"
         />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#F4F6FA"
+        app:cardCornerRadius="29dp"
+        app:cardElevation="4dp"
+        app:contentPaddingBottom="6dp"
+        app:contentPaddingLeft="8dp"
+        app:contentPaddingRight="8dp"
+        app:contentPaddingTop="6dp"
+        app:layout_constraintBottom_toTopOf="@id/card_storage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_input_image"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="0dp"
+                android:text="@string/label_btn_input_open_image"
+                android:textAllCaps="false"
+                android:textColor="@color/color_primary_dark"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_add_image"
+                app:iconPadding="8dp"
+                app:iconTint="@color/color_primary_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:strokeColor="@color/color_primary_dark"
+                />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_img_preview"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/light_gray"
+                android:padding="1dp"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/tv_progress"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintEnd_toEndOf="@id/button_input_image"
+                app:layout_constraintStart_toStartOf="@id/button_input_image"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.ExtraLarge"
+                app:strokeColor="@color/gray"
+                app:strokeWidth="1dp"
+                tools:ignore="ImageContrastCheck"
+                tools:visibility="visible"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_close"
+                style="?attr/actionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/iv_img_preview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_close"
+                tools:ignore="SpeakableTextPresentCheck"
+                tools:visibility="visible"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:gravity="center"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="4dp"
+                android:text="@string/label_progressing_image"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/button_input_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_horizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/tv_progress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="tv_progress,progress_horizontal"
+                tools:visibility="visible"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_content"
@@ -43,74 +166,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title_recent"
         tools:listitem="@layout/item_calculation"
-        />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/button_input_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="10dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/label_btn_input_open_image"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:icon="@drawable/ic_add_image"
-        app:iconPadding="8dp"
-        app:iconTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/tv_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_img_preview"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginBottom="6dp"
-        android:background="@color/light_gray"
-        android:elevation="2dp"
-        android:scaleType="fitCenter"
-        android:visibility="gone"
-        android:padding="1dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/gray"
-        app:layout_constraintBottom_toTopOf="@id/button_input_image"
-        app:layout_constraintEnd_toEndOf="@id/button_input_image"
-        app:layout_constraintStart_toStartOf="@id/button_input_image"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
-        tools:visibility="visible"
-        />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_progress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:text="@string/label_progressing_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/card_storage"
-        />
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/tv_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:constraint_referenced_ids="tv_progress,progress_horizontal"
         />
 
     <com.google.android.material.card.MaterialCardView
@@ -140,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/label_storage_file"
+                tools:ignore="VisualLintButtonSize"
                 />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -148,6 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/label_storage_database"
+                tools:ignore="VisualLintButtonSize"
                 />
         </RadioGroup>
     </com.google.android.material.card.MaterialCardView>

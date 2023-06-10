@@ -8,8 +8,8 @@ internal class AppDBStorage(
 	private val dao: CalculationDao
 ) : AppStorage {
 	
-	override suspend fun saveItem(item: CalculationParams) {
-		dao.insert(CalculationEntity(input = item.input, result = item.result))
+	override suspend fun saveItem(item: CalculationParams) : Long {
+		return dao.insert(CalculationEntity(input = item.input, result = item.result))
 	}
 	
 	override suspend fun saveItems(items: List<CalculationEntity>) {

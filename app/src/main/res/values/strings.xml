@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">Scan me! Calculator</string>
     <string name="label_btn_input_open_image">Image</string>
+    <string name="label_btn_input_capture_image">Capture</string>
     <string name="label_input">Input</string>
     <string name="label_result">Result</string>
     <string name="label_progressing_image">Progressing Image…</string>
     <string name="label_storage_file">File Storage</string>
     <string name="label_storage_database">Database Storage</string>
-    <string name="label_title_recent_calculation">Recent Calculation</string>
+    <string name="label_title_history_calculation">History</string>
 </resources>

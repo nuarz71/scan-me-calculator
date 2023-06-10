@@ -9,7 +9,7 @@ import com.nuarz.scancalc.data.storage.entity.CalculationEntity
 @Dao
 internal interface CalculationDao {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	suspend fun insert(calculation: CalculationEntity)
+	suspend fun insert(calculation: CalculationEntity) : Long
 	
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertAll(calculations: List<CalculationEntity>)
