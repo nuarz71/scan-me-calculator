@@ -4,22 +4,20 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.mlkit.vision.common.InputImage
 import com.nuarz.scancalc.R
-import com.nuarz.scancalc.data.LocalDataSource
 import com.nuarz.scancalc.databinding.ActivityMainBinding
 import com.nuarz.scancalc.ext.isBuildApiCapture
 import com.nuarz.scancalc.ext.isBuildApiPick
-import com.nuarz.scancalc.presentation.adapter.CalculationAdapter
 import com.nuarz.scancalc.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -38,8 +36,6 @@ class MainActivity : AppCompatActivity() {
     
     private lateinit var launcherTakeImage: ActivityResultLauncher<Uri>
     private lateinit var launcherGetContent: ActivityResultLauncher<Array<String>>
-    
-    private val calculationAdapter by lazy { CalculationAdapter() }
     
     private val decimalFormat by lazy {
         DecimalFormat("#,###.###", DecimalFormatSymbols(Locale.getDefault())).apply {
@@ -90,71 +86,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        
-        binding.rvContent.adapter = calculationAdapter
-        
-        binding.radioGroupStorage.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.radio_file -> viewModel.switchStorage(LocalDataSource.MODE_FILE)
-                R.id.radio_db -> viewModel.switchStorage(LocalDataSource.MODE_DB)
-            }
-        }
-    }
-    
-    private fun updateCurrentCalculationText(message: String, isError: Boolean = false) {
-        binding.tvCurrentCalculation.apply {
-            text = message
-            val size = if (isError) {
-                14f
-            } else {
-                24f
-            }
-            textSize = size
-        }
     }
     
     private fun observers() {
-        viewModel.calculationResult.observe(this) { model ->
-            model?.run {
-                val formattedResult = decimalFormat.format(model.result)
-                
-                
-                updateCurrentCalculationText(
-                    "Input: ${model.input}\n" +
-                        "Result: $formattedResult"
-                )
+        viewModel.calculationResult.observe(this) { result ->
+            if (result != null) {
+                binding.mainValueInput.text = result.first
+                binding.mainValueResult.text = decimalFormat.format(result.second)
+            } else {
+                binding.mainValueInput.text = "-"
+                binding.mainValueResult.text = "-"
             }
             
-        }
-        viewModel.histories.observe(this) {
-            calculationAdapter.submitList(it) {
-                Log.d("RVContent", "Called")
-                if (it.isNotEmpty()) {
-                    with(binding.rvContent) {
-                        postDelayed({
-                            if (canScrollVertically(-1) && scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-                                scrollToPosition(0)
-                            }
-                        }, 300L)
-                    }
-                }
-            }
-        }
-        viewModel.currentStorageMode.observe(this) {
-            when (it) {
-                LocalDataSource.MODE_FILE -> {
-                    binding.radioGroupStorage.check(R.id.radio_file)
-                }
-                
-                LocalDataSource.MODE_DB -> {
-                    binding.radioGroupStorage.check(R.id.radio_db)
-                }
-                
-                else -> {
-                    binding.radioGroupStorage.clearCheck()
-                }
-            }
-            updateCurrentCalculationText("")
         }
         viewModel.isProcessingImage.observe(this) {
             binding.buttonInputImage.isEnabled = it.not()
@@ -162,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.errorProcessingImage.observe(this) {
             it?.let { message ->
-                updateCurrentCalculationText(message, true)
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -187,7 +130,7 @@ class MainActivity : AppCompatActivity() {
     private fun takePicture() {
         val hasCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
         if (hasCamera.not()) {
-            updateCurrentCalculationText("Camera devices need to take a picture", true)
+            Toast.makeText(this, "Camera devices need to take a picture", Toast.LENGTH_SHORT).show()
             return
         }
         val dirname = "capture"

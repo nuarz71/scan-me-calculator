@@ -8,4 +8,5 @@
     <string name="label_storage_file">File Storage</string>
     <string name="label_storage_database">Database Storage</string>
     <string name="label_title_history_calculation">History</string>
+    <string name="placeholder_value">-</string>
 </resources>

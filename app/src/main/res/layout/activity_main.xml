@@ -9,43 +9,59 @@
     tools:context=".presentation.MainActivity"
     >
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_current_calculation"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_label_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:padding="24dp"
+        android:layout_marginTop="24dp"
+        android:paddingHorizontal="24dp"
+        android:text="@string/label_input"
         android:textColor="@color/dark_gray"
         android:textSize="14sp"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@tools:sample/lorem"
         />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_title_recent"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_value_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:padding="16dp"
-        android:text="@string/label_title_history_calculation"
+        android:paddingHorizontal="24dp"
+        android:text="@string/placeholder_value"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_current_calculation"
+        app:layout_constraintTop_toBottomOf="@id/main_label_input"
+        tools:text="@string/label_input"
         />
 
-    <View
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_label_result"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/light_gray"
-        app:layout_constraintBottom_toBottomOf="@id/tv_title_recent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingHorizontal="24dp"
+        android:text="@string/label_result"
+        android:textColor="@color/dark_gray"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/main_value_input"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_value_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:paddingHorizontal="24dp"
+        android:text="@string/placeholder_value"
+        android:textColor="?colorPrimaryVariant"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/main_label_result"
+        tools:text="@string/label_result"
         />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         app:cardBackgroundColor="#F4F6FA"
         app:cardCornerRadius="29dp"
         app:cardElevation="4dp"
@@ -53,7 +69,7 @@
         app:contentPaddingLeft="8dp"
         app:contentPaddingRight="8dp"
         app:contentPaddingTop="6dp"
-        app:layout_constraintBottom_toTopOf="@id/card_storage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         >
@@ -151,62 +167,6 @@
                 tools:visibility="visible"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:paddingVertical="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/card_storage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_recent"
-        tools:listitem="@layout/item_calculation"
-        />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_storage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/light_gray"
-        app:cardElevation="4dp"
-        app:contentPaddingLeft="16dp"
-        app:contentPaddingRight="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:shapeAppearance="@style/ShapeAppearanceTopRounded12dp"
-        >
-
-        <RadioGroup
-            android:id="@+id/radio_group_storage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_file"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/label_storage_file"
-                tools:ignore="VisualLintButtonSize"
-                />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_db"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/label_storage_database"
-                tools:ignore="VisualLintButtonSize"
-                />
-        </RadioGroup>
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

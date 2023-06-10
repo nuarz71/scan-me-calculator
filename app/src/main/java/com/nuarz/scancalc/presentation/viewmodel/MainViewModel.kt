@@ -8,64 +8,34 @@ import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognizer
-import com.nuarz.scancalc.data.LocalDataSource
-import com.nuarz.scancalc.data.params.CalculationParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val dataSource: LocalDataSource,
     private val textRecognizer: TextRecognizer
 ) : ViewModel() {
     
-    private val _histories = MutableLiveData<List<RecentUiModel>>(emptyList())
-    
-    private val _storageMode = MutableLiveData(LocalDataSource.MODE_FILE)
     
     private val _processImage = MutableLiveData(false)
     
     private val _firsOnlyCalculation = MutableLiveData(true)
     private val _errorProcessImageMsg = MutableLiveData<String?>(null)
-    private val _currentCalculation = MutableLiveData<RecentUiModel?>(null)
-    val calculationResult: LiveData<RecentUiModel?>
+    private val _currentCalculation = MutableLiveData<Pair<String, Double>?>(null)
+    val calculationResult: LiveData<Pair<String, Double>?>
         get() = _currentCalculation
     val isProcessingImage: LiveData<Boolean>
         get() = _processImage
     
-    val histories: LiveData<List<RecentUiModel>>
-        get() = _histories
-    
-    val currentStorageMode: LiveData<Int>
-        get() = _storageMode
-    
     val errorProcessingImage: LiveData<String?>
         get() = _errorProcessImageMsg
-    
-    init {
-        getRecent()
-    }
-    
-    fun switchStorage(mode: Int) {
-        dataSource.updateStorage(mode) {
-            _storageMode.value = mode
-            _currentCalculation.value = null
-            getRecent()
-        }
-    }
     
     fun processImage(image: InputImage) {
         _processImage.value = true
         _errorProcessImageMsg.value = null
-        _currentCalculation.value?.let {
-            val mutableHistories = _histories.value?.toMutableList() ?: mutableListOf()
-            mutableHistories.add(0, it)
-            _histories.value = mutableHistories
-            _currentCalculation.value = null
-        }
+        _currentCalculation.value = null
         textRecognizer.process(image)
             .addOnSuccessListener {
                 processCalculation(it)
@@ -119,29 +89,7 @@ class MainViewModel @Inject constructor(
                 _processImage.postValue(false)
                 return@launch
             }
-            val result = withContext(Dispatchers.IO) {
-                val params = CalculationParams(
-                    input = matcher.value,
-                    result = calculation
-                )
-                val id = try {
-                    dataSource.saveCalculation(params)
-                } catch (e: Throwable) {
-                    return@withContext null
-                }
-                RecentUiModel(
-                    id = id,
-                    input = params.input,
-                    result = params.result
-                )
-            }
-            if (result == null) {
-                _errorProcessImageMsg.postValue("Calculation failed")
-                _processImage.postValue(false)
-                _currentCalculation.postValue(null)
-                return@launch
-            }
-            _currentCalculation.postValue(result)
+            _currentCalculation.postValue(matcher.value to calculation)
             _processImage.postValue(false)
             
         }
@@ -217,17 +165,6 @@ class MainViewModel @Inject constructor(
             else -> {
                 operator1
             }
-        }
-    }
-    
-    private fun getRecent() {
-        viewModelScope.launch {
-            val items = withContext(Dispatchers.IO) {
-                dataSource.getRecentCalculations().map {
-                    RecentUiModel(id = it.id, input = it.input, result = it.result)
-                }
-            }
-            _histories.value = items
         }
     }
     

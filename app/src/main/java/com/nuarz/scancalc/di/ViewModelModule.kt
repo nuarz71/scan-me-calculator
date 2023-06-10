@@ -1,4 +1,4 @@
-package com.nuarz.scancalc.presentation.viewmodel
+package com.nuarz.scancalc.di
 
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
