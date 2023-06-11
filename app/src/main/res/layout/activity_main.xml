@@ -10,6 +10,21 @@
     >
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-light"
+        android:paddingHorizontal="24dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem"
+        tools:visibility="visible"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/main_label_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,8 +32,8 @@
         android:paddingHorizontal="24dp"
         android:text="@string/label_input"
         android:textColor="@color/dark_gray"
-        android:textSize="14sp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/main_error_message"
         />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -28,7 +43,7 @@
         android:paddingHorizontal="24dp"
         android:text="@string/placeholder_value"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/main_label_input"
         tools:text="@string/label_input"
         />
@@ -41,7 +56,7 @@
         android:paddingHorizontal="24dp"
         android:text="@string/label_result"
         android:textColor="@color/dark_gray"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/main_value_input"
         />
 
@@ -53,7 +68,7 @@
         android:paddingHorizontal="24dp"
         android:text="@string/placeholder_value"
         android:textColor="?colorPrimaryVariant"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/main_label_result"
         tools:text="@string/label_result"
         />

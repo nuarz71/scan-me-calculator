@@ -4,15 +4,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
 import com.google.mlkit.vision.common.InputImage
 import com.nuarz.scancalc.R
 import com.nuarz.scancalc.databinding.ActivityMainBinding
@@ -50,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        checkPlayServicesAvailable()
         launcherGetContent = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
             it?.let(this::updateImage)
         }
@@ -103,10 +99,15 @@ class MainActivity : AppCompatActivity() {
             binding.buttonInputImage.isEnabled = it.not()
             showProgress(it)
         }
-        viewModel.errorProcessingImage.observe(this) {
-            it?.let { message ->
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            }
+        viewModel.errorProcessingImage.observe(this) { message ->
+            updateErrorMessage(message)
+        }
+    }
+    
+    private fun updateErrorMessage(message: String?) {
+        binding.mainErrorMessage.apply {
+            text = message
+            isVisible = message.isNullOrBlank().not()
         }
     }
     
@@ -124,13 +125,14 @@ class MainActivity : AppCompatActivity() {
             isVisible = true
         }
         binding.btnClose.isVisible = true
+        binding.mainErrorMessage.isVisible = false
         viewModel.processImage(InputImage.fromFilePath(this, uri))
     }
     
     private fun takePicture() {
         val hasCamera = packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
         if (hasCamera.not()) {
-            Toast.makeText(this, "Camera devices need to take a picture", Toast.LENGTH_SHORT).show()
+            updateErrorMessage("Camera devices need to take a picture")
             return
         }
         val dirname = "capture"
@@ -152,17 +154,5 @@ class MainActivity : AppCompatActivity() {
     private fun showProgress(show: Boolean) {
         binding.tvProgress.setText(R.string.label_progressing_image)
         binding.groupProgress.isVisible = show
-    }
-    
-    private fun checkPlayServicesAvailable() {
-        val googleApi = GoogleApiAvailability.getInstance()
-        val resultCode = googleApi.isGooglePlayServicesAvailable(this)
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (googleApi.isUserResolvableError(resultCode)) {
-                val dialog = googleApi.getErrorDialog(this, resultCode, 101)
-                    ?: return
-                dialog.show()
-            }
-        }
     }
 }
